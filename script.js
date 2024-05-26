@@ -42,7 +42,7 @@ function createPlanet() {
     planet.addEventListener('click', () => {
         score += 10;
         scoreDisplay.textContent = `Счёт: ${score}`; // Изменение текста на "Счёт"
-        if (score >= 1000) {
+        if (score >= 500) {
             // Если счет достиг 1000, выводим сообщение "Уровень пройден"
             const levelPassedMessage = document.createElement('div');
             levelPassedMessage.textContent = 'Уровень пройден';
