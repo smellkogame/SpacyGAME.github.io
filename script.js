@@ -2,7 +2,6 @@ const gameContainer = document.getElementById('game-container');
 const scoreDisplay = document.getElementById('score');
 let score = 0;
 
-// Массив с изображениями планет
 const planets = [
     'mercury.png',
     'venus.png',
@@ -14,7 +13,6 @@ const planets = [
     'neptune.png'
 ];
 
-// Функция создания планеты
 function createPlanet() {
     const planet = document.createElement('div');
     planet.classList.add('planet');
@@ -24,33 +22,35 @@ function createPlanet() {
     planet.style.top = '-100px';
     gameContainer.appendChild(planet);
 
-    let fallingSpeed = 2 + Math.random() * 3;
+    let horizontalSpeed = Math.random() * 4 - 2; // Случайная горизонтальная скорость от -2 до 2
+    let verticalSpeed = 2 + Math.random() * 3; // Случайная вертикальная скорость от 2 до 5
 
-    // Функция для падения планеты
-    function fall() {
-        let top = parseFloat(planet.style.top);
-        if (top < gameContainer.offsetHeight) {
-            planet.style.top = `${top + fallingSpeed}px`;
-            requestAnimationFrame(fall);
-        } else {
+    function move() {
+        let left = parseFloat(planet.style.left) + horizontalSpeed;
+        let top = parseFloat(planet.style.top) + verticalSpeed;
+
+        if (left < -100 || left > gameContainer.offsetWidth || top > gameContainer.offsetHeight) {
+            // Удалить планету, если она вышла за пределы игрового поля
             gameContainer.removeChild(planet);
+        } else {
+            planet.style.left = `${left}px`;
+            planet.style.top = `${top}px`;
+            requestAnimationFrame(move);
         }
     }
 
-    // Обработка клика на планету
     planet.addEventListener('click', () => {
         score += 10;
         scoreDisplay.textContent = `Score: ${score}`;
         planet.classList.add('clicked');
-        setTimeout(() => gameContainer.removeChild(planet), 300); // Время на выполнение анимации
+        setTimeout(() => gameContainer.removeChild(planet), 300); // Даем время на выполнение анимации
     });
 
-    requestAnimationFrame(fall);
+    requestAnimationFrame(move);
 }
 
-// Функция для запуска игры
 function startGame() {
-    setInterval(createPlanet, 1000); // Создание новой планеты каждую секунду
+    setInterval(createPlanet, 1000);
 }
 
-startGame(); // Запуск игры
+startGame();
