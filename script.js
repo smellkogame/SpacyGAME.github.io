@@ -41,7 +41,15 @@ function createPlanet() {
 
     planet.addEventListener('click', () => {
         score += 10;
-        scoreDisplay.textContent = `Score: ${score}`;
+        scoreDisplay.textContent = `Счёт: ${score}`; // Изменение текста на "Счёт"
+        if (score >= 1000) {
+            // Если счет достиг 1000, выводим сообщение "Уровень пройден"
+            const levelPassedMessage = document.createElement('div');
+            levelPassedMessage.textContent = 'Уровень пройден';
+            levelPassedMessage.classList.add('level-passed');
+            gameContainer.appendChild(levelPassedMessage);
+            clearInterval(gameInterval); // Останавливаем создание новых планет
+        }
         planet.classList.add('clicked');
         setTimeout(() => gameContainer.removeChild(planet), 300); // Даем время на выполнение анимации
     });
@@ -50,7 +58,7 @@ function createPlanet() {
 }
 
 function startGame() {
-    setInterval(createPlanet, 1000);
+    gameInterval = setInterval(createPlanet, 1000); // Сохраняем интервал в глобальной переменной
 }
 
 startGame();
